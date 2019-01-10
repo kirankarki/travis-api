@@ -3,12 +3,6 @@ module Travis::API::V3
     require 'travis/api/v3/routes/dsl'
     extend DSL
 
-    resource :beta_migration_requests do
-      route '/beta_migration_requests'
-      get :find
-      post :create
-    end
-
     resource :broadcasts do
       route '/broadcasts'
       get :for_current_user
@@ -240,6 +234,11 @@ module Travis::API::V3
         route  '/beta_feature/{beta_feature.id}'
         patch  :update
         delete :delete
+      end
+
+      resource :beta_migration_request do
+        route '/beta_migration_request'
+        post   :create
       end
     end
 

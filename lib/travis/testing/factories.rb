@@ -149,4 +149,11 @@ FactoryGirl.define do
     dont_run_if_recent_build_exists false
     active true
   end
+
+  factory :beta_migration_request, class: Travis::API::V3::Models::BetaMigrationRequest do
+    owner_id { Factory(:user, :login => 'dummy_user').id }
+    owner_name 'dummy_user'
+    owner_type 'User'
+  end
+
 end
