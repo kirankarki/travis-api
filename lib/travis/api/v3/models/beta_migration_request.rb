@@ -4,7 +4,7 @@ module Travis::API::V3
     after_save :enable_beta
 
     def enable_beta
-      # set flag for user
+      Travis::Features.activate_owner(:allow_migration, owner)
     end
   end
 end
