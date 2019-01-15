@@ -9,6 +9,7 @@ module Travis::API::V3
     has_many :email_unsubscribes
     has_many :user_beta_features
     has_many :beta_features, through: :user_beta_features
+    has_one  :beta_migration_request
 
     serialize :github_oauth_token, Travis::Model::EncryptedColumn.new
     scope :with_github_token, -> { where('github_oauth_token IS NOT NULL')}

@@ -87,6 +87,12 @@ FactoryGirl.define do
   factory :permission do
   end
 
+  factory :membership do
+    organization { Factory(:org) }
+    user         { Factory(:user) }
+    role         "admin"
+  end
+
   factory :user do
     name  'Sven Fuchs'
     login 'svenfuchs'
