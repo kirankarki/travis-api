@@ -6,7 +6,7 @@ module Travis::API::V3
     after_save    :enable_beta
 
     def enable_beta
-      (organizations + [owner]).map do |o|
+      ((organizations || []) + [owner]).each do |o|
         Travis::Features.activate_owner(:beta_migration_opt_in, o)
       end
     end
