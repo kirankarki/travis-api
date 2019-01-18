@@ -20,15 +20,16 @@ describe Travis::API::V3::Models::BetaMigrationRequest do
     end
 
     it "should enable beta for all valid orgs selected" do
-      subject.save!
-      [Factory(:membership, user_id: subject.owner.id, role: "admin"),
-        Factory(:membership, user_id: subject.owner.id, role: "admin")].each do |mem|
-        # puts "mem.org:", mem.organization.inspect
-        mem.organization.beta_migration_request_id = subject.id
+      orgs = [Factory(:org_v3), Factory(:org_v3)]
+      orgs.each do |org|
+        org.memberships << Factory(:membership, user_id: subject.owner.id, role: "admin")
+        subject.organizations << org
+        org.beta_migration_request_id = subject.id
+        org.save!
+        subject.save!
       end
-      # puts "subject.orgs: #{subject.organizations.count}"
+
       subject.organizations.each do |org|
-        # puts org.inspect
         expect(Travis::Features.owner_active?(:beta_migration_opt_in, org)).to be true
       end
     end

@@ -87,9 +87,9 @@ FactoryGirl.define do
   factory :permission do
   end
 
-  factory :membership do
-    organization { Factory(:org) }
-    user         { Factory(:user) }
+  factory :membership, class: Travis::API::V3::Models::Membership do
+    organization_id { Factory(:org_v3).id }
+    user_id         { Factory(:user).id }
     role         "admin"
   end
 
@@ -102,6 +102,10 @@ FactoryGirl.define do
   end
 
   factory :org, :class => 'Organization' do
+    name 'travis-ci'
+  end
+
+  factory :org_v3, class: Travis::API::V3::Models::Organization do
     name 'travis-ci'
   end
 
