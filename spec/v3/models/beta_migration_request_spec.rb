@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Travis::API::V3::Models::BetaMigrationRequest do
-  let(:subject) { Factory.build(:beta_migration_request) }
+  let(:subject) { Factory(:beta_migration_request) }
 
   # context "without authentication" do
   #   before { post("/v3/user/#{subject.owner.id}/beta_migration_request") }
@@ -21,8 +21,14 @@ describe Travis::API::V3::Models::BetaMigrationRequest do
 
     it "should enable beta for all valid orgs selected" do
       subject.save!
-      valid_orgs = [Factory(:membership, user_id: subject.owner.id, role: "admin"), Factory(:membership, user_id: subject.owner.id, role: "admin")]
-      valid_orgs.each do |org|
+      [Factory(:membership, user_id: subject.owner.id, role: "admin"),
+        Factory(:membership, user_id: subject.owner.id, role: "admin")].each do |mem|
+        # puts "mem.org:", mem.organization.inspect
+        mem.organization.beta_migration_request_id = subject.id
+      end
+      # puts "subject.orgs: #{subject.organizations.count}"
+      subject.organizations.each do |org|
+        # puts org.inspect
         expect(Travis::Features.owner_active?(:beta_migration_opt_in, org)).to be true
       end
     end
