@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Travis::API::V3::Models::BetaMigrationRequest do
+describe Travis::API::V3::Models::BetaMigrationRequest, set_app: true do
   let(:subject) { Factory(:beta_migration_request) }
 
   context "without authentication" do
