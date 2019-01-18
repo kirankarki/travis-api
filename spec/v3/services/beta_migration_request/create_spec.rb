@@ -3,17 +3,15 @@ require 'spec_helper'
 describe Travis::API::V3::Services::BetaMigrationRequest::Create, set_app: true do
   let(:user)  { Travis::API::V3::Models::User.where(login: 'svenfuchs').first_or_create }
   let(:token) { Travis::Api::App::AccessToken.create(user: user, app_id: 1) }
-  # let(:beta_feature) { Travis::API::V3::Models::BetaFeature.create(name: 'FOO2', description: "Bar Baz.", feedback_url: "http://thisisgreat.com") }
-  let(:auth_headers) { { 'HTTP_AUTHORIZATION' => "token #{token}" } }
-  # let(:json_headers) { { 'CONTENT_TYPE' => 'application/json' } }
+ let(:auth_headers) { { 'HTTP_AUTHORIZATION' => "token #{token}" } }
 
   describe 'not authenticated' do
-    before { post("/v3/user/#{user.id}/beta_migration_request/", {}) }
+    before { post("/v3/user/#{user.id}/beta_migration_request", {}) }
     include_examples 'not authenticated'
   end
 
   describe 'authenticated, missing user' do
-    before { post("/v3/user/999999999/beta_migration_request/", {}, auth_headers) }
+    before { post("/v3/user/999999999/beta_migration_request", {}, auth_headers) }
     include_examples 'missing user'
   end
 
