@@ -4,6 +4,7 @@ module Travis::API::V3
     result_type :beta_migration_request
 
     def run!
+      puts "logged in"
       raise LoginRequired unless access_control.logged_in?
       current_user = access_control.user
 
